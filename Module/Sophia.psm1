@@ -510,6 +510,7 @@ function DossierConfigAppData
 function ActivationWindows
 {
     Centrer "On Active Windows"
+    $ConfigDesktop = "$env:USERPROFILE\Desktop\Config"
     powershell.exe "$ConfigDesktop\3-mas-activator\HWID-KMS38_Activation\HWID_Activation.cmd" "/a"
     Centrer "Windows Active!!!" Green
 }
@@ -590,12 +591,12 @@ function InstallByWinGet
 	Remove-Item -Path "$env:USERPROFILE\Desktop\Tor Browser" -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "C:\Users\Public\Desktop\Mozilla Thunderbird.lnk" -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "C:\Users\Public\Desktop\Steam.lnk" -Recurse -Force -ErrorAction Ignore
-	Remove-Item -Path "$env:USERPROFILE\Desktop\Discord.lnk" -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "C:\Users\Public\Desktop\Synology Active Backup for Business Agent.lnk" -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "C:\Users\Public\Desktop\Synology Drive Client.lnk" -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "C:\Users\Public\Desktop\TeamViewer.lnk" -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "C:\Users\Public\Desktop\Everything.lnk" -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "C:\Users\Public\Desktop\ImageGlass.lnk" -Recurse -Force -ErrorAction Ignore
+	Remove-Item -Path "$env:USERPROFILE\Desktop\Discord.lnk" -Recurse -Force -ErrorAction Ignore
 	
     Centrer "!!! Applications WinGet installees !!!!!!" Green
 
