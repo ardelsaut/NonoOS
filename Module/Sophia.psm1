@@ -368,9 +368,9 @@ function DossierConfig
 
 function DossierConfigAdobe
 {
+	$ConfigDesktop = "$env:USERPROFILE\Desktop\Config"
+
     Copy-Item "$ConfigDesktop\01-Adobe\*" -Destination "$env:USERPROFILE\A-INSTALLER\Adobe-Acrobat-Pro.iso" -Force -Verbose -Recurse 
-
-
 	Write-Host "Mount the ISO, without having a drive letter auto-assigned";
     $driveLetter = "H:\"
 	$isoImg = "$env:USERPROFILE\A-INSTALLER\Adobe-Acrobat-Pro.iso"
@@ -483,7 +483,8 @@ function DossierConfigStartisBack
 {
     $ConfigDesktop = "$env:USERPROFILE\Desktop\Config"
     Copy-Item "$ConfigDesktop\04-StartAllBack\" -Destination "$env:USERPROFILE\A-INSTALLER\StartAllBack\" -Force -Verbose -Recurse
-    Start-Process -FilePath "$ConfigDesktop\04-StartAllBack\StartAllBack-3.3.3.exe" "/elevated"
+	$myprocss = Start-Process -FilePath "$ConfigDesktop\04-StartAllBack\StartAllBack-3.3.3.exe" "/elevated" -PassThru 
+	$myprocss.WaitForExit()
 	Start-Sleep -Seconds 5
 	Remove-Item -Path "C:\Program Files\StartAllBack\StartAllBackX64.dll" -Force
 	Remove-Item -Path "C:\Program Files\StartAllBack\UpdateCheck" -Force
