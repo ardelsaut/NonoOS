@@ -369,7 +369,6 @@ function DossierConfig
 function DossierConfigAdobe
 {
 	$ConfigDesktop = "$env:USERPROFILE\Desktop\Config"
-
     Copy-Item "$ConfigDesktop\01-Adobe\*" -Destination "$env:USERPROFILE\A-INSTALLER\Adobe-Acrobat-Pro.iso" -Force -Verbose -Recurse 
 	Write-Host "Mount the ISO, without having a drive letter auto-assigned";
     $driveLetter = "H:\"
@@ -460,7 +459,7 @@ function DossierConfigRevo
 {
     $ConfigDesktop = "$env:USERPROFILE\Desktop\Config"
     Expand-7Zip -ArchiveFileName "$ConfigDesktop\05-Revo-Uninstaller-Pro-4.5.5\revo.7z" -TargetPath "$env:USERPROFILE\Documents\Applications" -Verbose
-	Move-Item -Path "$env:USERPROFILE\Documents\Applications\revo" -destination "$env:USERPROFILE\Documents\Applications\Revo-Uninstaller-Pro-4.5.5" -Force
+	# Move-Item -Path "$env:USERPROFILE\Documents\Applications\revo" -destination "$env:USERPROFILE\Documents\Applications\Revo-Uninstaller-Pro-4.5.5" -Force
 }
 
 
