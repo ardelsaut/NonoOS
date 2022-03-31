@@ -42,6 +42,14 @@ Checkings -Warning
 #####################################################################################################################################################################################################
 
 
+Set-ScreenResolution -Width 1920 -Height 1080
+Set-ScreenRefreshRate 60
+# Set-ScreenRefreshRate -Frequency 60 -Force
+
+
+#######################################################
+
+
 # Create a restore point
 CreateRestorePoint
 

@@ -356,7 +356,8 @@ function DossierConfig
 	New-Item -Path "$ConfigDesktop" -ItemType Directory -Force
     
 	$ConfigBackup = "T:\PC\Windows\NonoOS\Config"
-	Copy-Item "$ConfigBackup\*" -Destination "$ConfigDesktop\" -Exclude "$ConfigBackup\'4-AppData'" -Force -Verbose -Recurse 
+	Copy-Item -Path (Get-Item -Path "$ConfigBackup\*" -Exclude ('$ConfigBackup\4-AppData')).FullName -Destination "$ConfigDesktop\" -Recurse -Force -Verbose
+	# Copy-Item "$ConfigBackup\*" -Destination "$ConfigDesktop\" -Exclude "$ConfigBackup\4-AppData" -Force -Verbose -Recurse 
     Centrer "Dossier De Configuration du Nas copié sur le Bureau!!!" Green
     Centrer "On Copie les dossiers de configurations du Bureau vers la bonne Location de Chacun"
 	New-Item -Path "$env:USERPROFILE\A-INSTALLER" -ItemType Directory -Force
@@ -484,7 +485,7 @@ function DossierConfigStartisBack
     Copy-Item "$ConfigDesktop\04-StartAllBack\" -Destination "$env:USERPROFILE\A-INSTALLER\StartAllBack\" -Force -Verbose -Recurse
 	$myprocss = Start-Process -FilePath "$ConfigDesktop\04-StartAllBack\StartAllBack-3.3.3.exe" "/elevated" -PassThru 
 	$myprocss.WaitForExit()
-	Start-Sleep -Seconds 5
+	Start-Sleep -Seconds 10
 	Remove-Item -Path "C:\Program Files\StartAllBack\StartAllBackX64.dll" -Force
 	Remove-Item -Path "C:\Program Files\StartAllBack\UpdateCheck" -Force
 	Move-Item "$ConfigDesktop\04-StartAllBack\Crack\StartAllBackX64.dll" -Destination "C:\Program Files\StartAllBack\StartAllBackX64.dll"
@@ -586,15 +587,16 @@ function InstallByWinGet
 	Remove-Item -Path "$env:USERPROFILE\Desktop\Telegram.lnk" -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "$env:USERPROFILE\Desktop\WhatsApp.lnk" -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "$env:USERPROFILE\Desktop\Bitwarden.lnk" -Recurse -Force -ErrorAction Ignore
-	Remove-Item -Path "$env:USERPROFILE\Desktop\Discord.lnk" -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "$env:USERPROFILE\Desktop\Tor Browser" -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "C:\Users\Public\Desktop\Mozilla Thunderbird.lnk" -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "C:\Users\Public\Desktop\Steam.lnk" -Recurse -Force -ErrorAction Ignore
+	Remove-Item -Path "$env:USERPROFILE\Desktop\Discord.lnk" -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "C:\Users\Public\Desktop\Synology Active Backup for Business Agent.lnk" -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "C:\Users\Public\Desktop\Synology Drive Client.lnk" -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "C:\Users\Public\Desktop\TeamViewer.lnk" -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "C:\Users\Public\Desktop\Everything.lnk" -Recurse -Force -ErrorAction Ignore
 	Remove-Item -Path "C:\Users\Public\Desktop\ImageGlass.lnk" -Recurse -Force -ErrorAction Ignore
+	
     Centrer "!!! Applications WinGet installees !!!!!!" Green
 
 }
@@ -643,6 +645,308 @@ function MenuRedemarrage
 
 
 
+
+
+Function Set-ScreenResolution { 
+
+<# 
+    .Synopsis 
+        Sets the Screen Resolution of the primary monitor 
+    .Description 
+        Uses Pinvoke and ChangeDisplaySettings Win32API to make the change 
+    .Example 
+        Set-ScreenResolution -Width 1024 -Height 768         
+    #> 
+param ( 
+[Parameter(Mandatory=$true, 
+           Position = 0)] 
+[int] 
+$Width, 
+
+[Parameter(Mandatory=$true, 
+           Position = 1)] 
+[int] 
+$Height 
+) 
+
+$pinvokeCode = @" 
+
+using System; 
+using System.Runtime.InteropServices; 
+
+namespace Resolution 
+{ 
+
+    [StructLayout(LayoutKind.Sequential)] 
+    public struct DEVMODE1 
+    { 
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)] 
+        public string dmDeviceName; 
+        public short dmSpecVersion; 
+        public short dmDriverVersion; 
+        public short dmSize; 
+        public short dmDriverExtra; 
+        public int dmFields; 
+
+        public short dmOrientation; 
+        public short dmPaperSize; 
+        public short dmPaperLength; 
+        public short dmPaperWidth; 
+
+        public short dmScale; 
+        public short dmCopies; 
+        public short dmDefaultSource; 
+        public short dmPrintQuality; 
+        public short dmColor; 
+        public short dmDuplex; 
+        public short dmYResolution; 
+        public short dmTTOption; 
+        public short dmCollate; 
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)] 
+        public string dmFormName; 
+        public short dmLogPixels; 
+        public short dmBitsPerPel; 
+        public int dmPelsWidth; 
+        public int dmPelsHeight; 
+
+        public int dmDisplayFlags; 
+        public int dmDisplayFrequency; 
+
+        public int dmICMMethod; 
+        public int dmICMIntent; 
+        public int dmMediaType; 
+        public int dmDitherType; 
+        public int dmReserved1; 
+        public int dmReserved2; 
+
+        public int dmPanningWidth; 
+        public int dmPanningHeight; 
+    }; 
+
+
+
+    class User_32 
+    { 
+        [DllImport("user32.dll")] 
+        public static extern int EnumDisplaySettings(string deviceName, int modeNum, ref DEVMODE1 devMode); 
+        [DllImport("user32.dll")] 
+        public static extern int ChangeDisplaySettings(ref DEVMODE1 devMode, int flags); 
+
+        public const int ENUM_CURRENT_SETTINGS = -1; 
+        public const int CDS_UPDATEREGISTRY = 0x01; 
+        public const int CDS_TEST = 0x02; 
+        public const int DISP_CHANGE_SUCCESSFUL = 0; 
+        public const int DISP_CHANGE_RESTART = 1; 
+        public const int DISP_CHANGE_FAILED = -1; 
+    } 
+
+
+
+    public class PrmaryScreenResolution 
+    { 
+        static public string ChangeResolution(int width, int height) 
+        { 
+
+            DEVMODE1 dm = GetDevMode1(); 
+
+            if (0 != User_32.EnumDisplaySettings(null, User_32.ENUM_CURRENT_SETTINGS, ref dm)) 
+            { 
+
+                dm.dmPelsWidth = width; 
+                dm.dmPelsHeight = height; 
+
+                int iRet = User_32.ChangeDisplaySettings(ref dm, User_32.CDS_TEST); 
+
+                if (iRet == User_32.DISP_CHANGE_FAILED) 
+                { 
+                    return "Unable To Process Your Request. Sorry For This Inconvenience."; 
+                } 
+                else 
+                { 
+                    iRet = User_32.ChangeDisplaySettings(ref dm, User_32.CDS_UPDATEREGISTRY); 
+                    switch (iRet) 
+                    { 
+                        case User_32.DISP_CHANGE_SUCCESSFUL: 
+                            { 
+                                return "Success"; 
+                            } 
+                        case User_32.DISP_CHANGE_RESTART: 
+                            { 
+                                return "You Need To Reboot For The Change To Happen.\n If You Feel Any Problem After Rebooting Your Machine\nThen Try To Change Resolution In Safe Mode."; 
+                            } 
+                        default: 
+                            { 
+                                return "Failed To Change The Resolution"; 
+                            } 
+                    } 
+
+                } 
+
+
+            } 
+            else 
+            { 
+                return "Failed To Change The Resolution."; 
+            } 
+        } 
+
+        private static DEVMODE1 GetDevMode1() 
+        { 
+            DEVMODE1 dm = new DEVMODE1(); 
+            dm.dmDeviceName = new String(new char[32]); 
+            dm.dmFormName = new String(new char[32]); 
+            dm.dmSize = (short)Marshal.SizeOf(dm); 
+            return dm; 
+        } 
+    } 
+} 
+
+"@ 
+
+Add-Type $pinvokeCode -ErrorAction SilentlyContinue 
+[Resolution.PrmaryScreenResolution]::ChangeResolution($width,$height) 
+} 
+
+
+function Set-ScreenRefreshRate
+{ 
+    param ( 
+        [Parameter(Mandatory=$true)] 
+        [int] $Frequency
+    ) 
+
+    $pinvokeCode = @"         
+        using System; 
+        using System.Runtime.InteropServices; 
+
+        namespace Display 
+        { 
+            [StructLayout(LayoutKind.Sequential)] 
+            public struct DEVMODE1 
+            { 
+                [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)] 
+                public string dmDeviceName; 
+                public short dmSpecVersion; 
+                public short dmDriverVersion; 
+                public short dmSize; 
+                public short dmDriverExtra; 
+                public int dmFields; 
+
+                public short dmOrientation; 
+                public short dmPaperSize; 
+                public short dmPaperLength; 
+                public short dmPaperWidth; 
+
+                public short dmScale; 
+                public short dmCopies; 
+                public short dmDefaultSource; 
+                public short dmPrintQuality; 
+                public short dmColor; 
+                public short dmDuplex; 
+                public short dmYResolution; 
+                public short dmTTOption; 
+                public short dmCollate; 
+                [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)] 
+                public string dmFormName; 
+                public short dmLogPixels; 
+                public short dmBitsPerPel; 
+                public int dmPelsWidth; 
+                public int dmPelsHeight; 
+
+                public int dmDisplayFlags; 
+                public int dmDisplayFrequency; 
+
+                public int dmICMMethod; 
+                public int dmICMIntent; 
+                public int dmMediaType; 
+                public int dmDitherType; 
+                public int dmReserved1; 
+                public int dmReserved2; 
+
+                public int dmPanningWidth; 
+                public int dmPanningHeight; 
+            }; 
+
+            class User_32 
+            { 
+                [DllImport("user32.dll")] 
+                public static extern int EnumDisplaySettings(string deviceName, int modeNum, ref DEVMODE1 devMode); 
+                [DllImport("user32.dll")] 
+                public static extern int ChangeDisplaySettings(ref DEVMODE1 devMode, int flags); 
+
+                public const int ENUM_CURRENT_SETTINGS = -1; 
+                public const int CDS_UPDATEREGISTRY = 0x01; 
+                public const int CDS_TEST = 0x02; 
+                public const int DISP_CHANGE_SUCCESSFUL = 0; 
+                public const int DISP_CHANGE_RESTART = 1; 
+                public const int DISP_CHANGE_FAILED = -1; 
+            } 
+
+            public class PrimaryScreen  
+            { 
+                static public string ChangeRefreshRate(int frequency) 
+                { 
+                    DEVMODE1 dm = GetDevMode1(); 
+
+                    if (0 != User_32.EnumDisplaySettings(null, User_32.ENUM_CURRENT_SETTINGS, ref dm)) 
+                    { 
+                        dm.dmDisplayFrequency = frequency;
+
+                        int iRet = User_32.ChangeDisplaySettings(ref dm, User_32.CDS_TEST); 
+
+                        if (iRet == User_32.DISP_CHANGE_FAILED) 
+                        { 
+                            return "Unable to process your request. Sorry for this inconvenience."; 
+                        } 
+                        else 
+                        { 
+                            iRet = User_32.ChangeDisplaySettings(ref dm, User_32.CDS_UPDATEREGISTRY); 
+                            switch (iRet) 
+                            { 
+                                case User_32.DISP_CHANGE_SUCCESSFUL: 
+                                { 
+                                    return "Success"; 
+                                } 
+                                case User_32.DISP_CHANGE_RESTART: 
+                                { 
+                                    return "You need to reboot for the change to happen.\n If you feel any problems after rebooting your machine\nThen try to change resolution in Safe Mode."; 
+                                } 
+                                default: 
+                                { 
+                                    return "Failed to change the resolution"; 
+                                } 
+                            } 
+                        } 
+                    } 
+                    else 
+                    { 
+                        return "Failed to change the resolution."; 
+                    } 
+                } 
+
+                private static DEVMODE1 GetDevMode1() 
+                { 
+                    DEVMODE1 dm = new DEVMODE1(); 
+                    dm.dmDeviceName = new String(new char[32]); 
+                    dm.dmFormName = new String(new char[32]); 
+                    dm.dmSize = (short)Marshal.SizeOf(dm); 
+                    return dm; 
+                } 
+            } 
+        } 
+"@ # don't indend this line
+
+    Add-Type $pinvokeCode -ErrorAction SilentlyContinue
+
+    [Display.PrimaryScreen]::ChangeRefreshRate($frequency) 
+}
+
+function Get-ScreenRefreshRate
+{
+    $frequency = Get-WmiObject -Class "Win32_VideoController" | Select-Object -ExpandProperty "CurrentRefreshRate"
+
+    return $frequency
+}
 ###########################################################################################################################################################################################################################################################################
 ###########################################################################################################################################################################################################################################################################
 ###########################################################################################################################################################################################################################################################################
@@ -4706,11 +5010,11 @@ function WindowsManageDefaultPrinter
 
 function WindowsFeaturesbynono
 {
-Disable-WindowsOptionalFeature -Online -FeatureName "LegacyComponents" -norestart
-Disable-WindowsOptionalFeature -Online -FeatureName "MicrosoftWindowsPowerShellV2" -norestart
-Disable-WindowsOptionalFeature -Online -FeatureName "MicrosoftWindowsPowershellV2Root" -norestart
-Disable-WindowsOptionalFeature -Online -FeatureName "Printing-XPSServices-Features" -norestart
-Disable-WindowsOptionalFeature -Online -FeatureName "WorkFolders-Client" -norestart
+Disable-WindowsOptionalFeature -Online -FeatureName "LegacyComponents" -NoRestart
+Disable-WindowsOptionalFeature -Online -FeatureName "MicrosoftWindowsPowerShellV2" -NoRestart
+Disable-WindowsOptionalFeature -Online -FeatureName "MicrosoftWindowsPowershellV2Root" -NoRestart
+Disable-WindowsOptionalFeature -Online -FeatureName "Printing-XPSServices-Features" -NoRestart
+Disable-WindowsOptionalFeature -Online -FeatureName "WorkFolders-Client" -NoRestart
 }
 
 function WindowsFeatures
