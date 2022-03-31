@@ -4706,11 +4706,11 @@ function WindowsManageDefaultPrinter
 
 function WindowsFeaturesbynono
 {
-Disable-WindowsOptionalFeature -Online -FeatureName "LegacyComponents"
-Disable-WindowsOptionalFeature -Online -FeatureName "MicrosoftWindowsPowerShellV2"
-Disable-WindowsOptionalFeature -Online -FeatureName "MicrosoftWindowsPowershellV2Root"
-Disable-WindowsOptionalFeature -Online -FeatureName "Printing-XPSServices-Features"
-Disable-WindowsOptionalFeature -Online -FeatureName "WorkFolders-Client"
+Disable-WindowsOptionalFeature -Online -FeatureName "LegacyComponents" -norestart
+Disable-WindowsOptionalFeature -Online -FeatureName "MicrosoftWindowsPowerShellV2" -norestart
+Disable-WindowsOptionalFeature -Online -FeatureName "MicrosoftWindowsPowershellV2Root" -norestart
+Disable-WindowsOptionalFeature -Online -FeatureName "Printing-XPSServices-Features" -norestart
+Disable-WindowsOptionalFeature -Online -FeatureName "WorkFolders-Client" -norestart
 }
 
 function WindowsFeatures
