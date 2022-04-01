@@ -551,7 +551,9 @@ function InstallByWinGet
        winget install --id=$str1  -e --accept-package-agreements --accept-source-agreements
     }
     $apps = @(
-		# Indispensables
+		##################
+		# Indispensables #
+		##################
         "7zip.7zip"
         "JanDeDobbeleer.OhMyPosh"
         "voidtools.Everything"
@@ -562,34 +564,57 @@ function InstallByWinGet
         "Mozilla.Thunderbird"
         "qBittorrent.qBittorrent"
         "TorProject.TorBrowser"
-		# Contrôle à Distance
+
+		#######################
+		# Contrôle à Distance #
+		#######################
         "Parsec.Parsec"
         "TeamViewer.TeamViewer"
-		# Communication
-        "WhatsApp.WhatsApp"
+
+		#################
+		# Communication #
+        #################
+		"WhatsApp.WhatsApp"
         "Discord.Discord"
         "Telegram.TelegramDesktop"
-		# Traitement d'Image
+		
+		######################
+		# Traitement d'Image #
+		######################
         "DuongDieuPhap.ImageGlass"
         "Flameshot.Flameshot"
         "Python.3"
-		# Synology
-		
+
+		############
+		# Synology #
+		############
         "Synology.DriveClient"
         "Synology.NoteStationClient"
         "Synology.ActiveBackupForBusinessAgent"
         "Melvin-Abraham.Google-Assistant.Preview"
-		# Multimédia
+		
+		##############
+		# Multimédia #
+		##############
+		
         "Valve.Steam"
         "Microsoft.PowerToys"
         "Google.Drive"
-		# Éditeur de Texte
+
+		####################
+		# Éditeur de Texte #
+		####################
         "Meld.Meld"
         "VSCodium.VSCodium"
+
+		############
+		# Not USED #
+		############
         # "Microsoft.Edge"
         # "Obsidian.Obsidian"
         # "Microsoft.WindowsTerminal"
         # "VideoLAN.VLC"
+
         )
     foreach ($app in $apps) {
         winget-install $app
