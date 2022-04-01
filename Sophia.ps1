@@ -7,7 +7,9 @@ param
 	[string[]]
 	$Functions
 )
-    Start-Transcript -Path "$env:USERPROFILE\Desktop\Log-Installation-Script-Win11.txt" -Force
+
+$TrascriptFilename = "Log-$((Get-Date).ToString("dd.MM.yyyy-HH-mm"))"
+Start-Transcript -Path $env:USERPROFILE\Desktop\$TrascriptFilename.txt -Force
 
 Clear-Host
 $Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v6.0.13 | Made with $([char]::ConvertFromUtf32(0x1F497)) of Windows | $([char]0x00A9) farag & Inestic, 2014$([char]0x2013)2022"
@@ -587,9 +589,9 @@ DossierConfig
 
 DossierConfigVSCodium
 DossierConfigSsh
-
-
 # DossierConfigAppData
+
+
 
 
 

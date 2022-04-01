@@ -125,11 +125,11 @@
 
 
 
-function Logging
-{
-	$TrascriptFilename = "Log-$((Get-Date).ToString("dd.MM.yyyy-HH-mm"))"
-	Start-Transcript -Path $PSScriptRoot\$TrascriptFilename.txt -Force
-}
+# function Logging
+# {
+# 	$TrascriptFilename = "Log-$((Get-Date).ToString("dd.MM.yyyy-HH-mm"))"
+# 	Start-Transcript -Path $PSScriptRoot\$TrascriptFilename.txt -Force
+# }
 
 
 
@@ -285,6 +285,7 @@ function InstallGit
     Install-Module posh-git -SkipPublisherCheck -Scope CurrentUser -Force -ErrorAction Ignore
     Import-Module posh-git
     Add-PoshGitToProfile -AllUsers -AllHosts
+	Start-Sleep -Seconds 5
 	Remove-Item -Path "$env:USERPROFILE\Git-2.34.1-64-bit.exe"
     Centrer "Le module (Posh-Git) est installe!!!" Green
 	# RefreshEnvironment
@@ -406,6 +407,7 @@ function DossierConfigSsh
         Write-Output "Firewall rule 'OpenSSH-Server-In-TCP' has been created and exists."
     }
 
+	$ConfigDesktop = "$env:USERPROFILE\Desktop\Config"
     $configpath = "$env:USERPROFILE\.ssh" 
     $pathExists = Test-Path -Path $configpath
     If ($pathExists)  {
@@ -485,9 +487,12 @@ function DossierConfigStartisBack
     Copy-Item "$ConfigDesktop\04-StartAllBack\" -Destination "$env:USERPROFILE\A-INSTALLER\StartAllBack\" -Force -Verbose -Recurse
 	$myprocss = Start-Process -FilePath "$ConfigDesktop\04-StartAllBack\StartAllBack-3.3.3.exe" "/elevated" -PassThru 
 	$myprocss.WaitForExit()
+    Centrer "dossiers de configurations du Bureau vers la bonne Location de Chacun copie correctement!!!" Green
 	Start-Sleep -Seconds 10
-	Remove-Item -Path "C:\Program Files\StartAllBack\StartAllBackX64.dll" -Force
-	Remove-Item -Path "C:\Program Files\StartAllBack\UpdateCheck" -Force
+    Centrer "dossiers de configurations du Bureau vers la bonne Location de Chacun copie correctement!!!" Green
+	Start-Sleep -Seconds 10
+	Remove-Item -Path "$env:ProgramFiles\StartAllBack\StartAllBackX64.dll" -Force
+	Remove-Item -Path "$env:ProgramFiles\StartAllBack\UpdateCheck" -Force
 	Move-Item "$ConfigDesktop\04-StartAllBack\Crack\StartAllBackX64.dll" -Destination "C:\Program Files\StartAllBack\StartAllBackX64.dll"
 	RefreshEnvironment
 }
@@ -569,12 +574,12 @@ function InstallByWinGet
         "Flameshot.Flameshot"
         "Python.3"
 		# Synology
+		
         "Synology.DriveClient"
         "Synology.NoteStationClient"
         "Synology.ActiveBackupForBusinessAgent"
         "Melvin-Abraham.Google-Assistant.Preview"
 		# Multimédia
-		"PeterPawlowski.foobar2000"
         "Valve.Steam"
         "Microsoft.PowerToys"
         "Google.Drive"
