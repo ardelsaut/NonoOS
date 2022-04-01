@@ -368,7 +368,8 @@ InstallVCRedistx64
 	Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму
 	Параметр "При обновлении Windows получать обновления для других продуктов Майкрософт" будет включен автоматически в Центре обновлении Windows, чтобы получать обновления ядра
 #>
-WSL
+# WSL
+WSLbynono
 
 # Unpin all Start apps
 UnpinAllStartApps
@@ -589,7 +590,8 @@ DossierConfig
 
 DossierConfigVSCodium
 DossierConfigSsh
-# DossierConfigAppData
+
+DossierConfigAppData
 
 
 

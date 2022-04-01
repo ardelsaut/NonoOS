@@ -503,6 +503,18 @@ function DossierConfigVmWare
 	$myprocss.WaitForExit()
 }
 
+
+##########
+
+
+function DossierConfigWindowsUpdate
+{
+    $ConfigDesktop = "$env:USERPROFILE\Desktop\Config"
+    Copy-Item "$ConfigDesktop\09-Windows-Update\" -Destination "$env:USERPROFILE\Documents\Applications\Windows-Update" -Force -Verbose -Recurse
+
+}
+
+
 ##########
 
 
@@ -8695,6 +8707,14 @@ function InstallVCRedistx64
 	.NOTES
 	Machine-wide
 #>
+function WSLbynono
+{
+	Start-Process -FilePath wsl.exe -ArgumentList "--install --distribution Debian" -Wait
+	(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+
+}
+
+
 function WSL
 {
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
