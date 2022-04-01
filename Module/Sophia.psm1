@@ -186,6 +186,7 @@ function CreateRestorePoint
 ##########
 
 
+
 function Centrer()
 {
   param(
@@ -396,32 +397,29 @@ function DossierConfigSsh
 {
     Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
     Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
-    Start-Service sshd
-    Start-Service ssh-agent
-    Set-Service -Name sshd -StartupType 'Automatic'
-    Set-Service -Name ssh-agent -StartupType 'Automatic'
-    if (!(Get-NetFirewallRule -Name "OpenSSH-Server-In-TCP" -ErrorAction SilentlyContinue | Select-Object Name, Enabled)) {
-            Write-Output "Firewall Rule 'OpenSSH-Server-In-TCP' does not exist, creating it..."
-    New-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
-    } else {
-        Write-Output "Firewall rule 'OpenSSH-Server-In-TCP' has been created and exists."
-    }
-
-	$ConfigDesktop = "$env:USERPROFILE\Desktop\Config"
-    $configpath = "$env:USERPROFILE\.ssh" 
-    $pathExists = Test-Path -Path $configpath
-    If ($pathExists)  {
-    rmdir /s $env:USERPROFILE\.ssh
-    rmdir /s $env:USERPROFILE\.dbus-keyrings
-    Copy-Item "$ConfigDesktop\1-ssh\.dbus-keyrings\" -Destination "$env:USERPROFILE\" -Force -Verbose -Recurse
-    Copy-Item "$ConfigDesktop\1-ssh\.ssh\" -Destination "$env:USERPROFILE\" -Force -Verbose -Recurse
-    Return      #end the function if path was already there
-    }
-    else {
-    (Copy-Item "$ConfigDesktop\1-ssh\.dbus-keyrings\" -Destination "$env:USERPROFILE\" -Force -Verbose -Recurse)
-    (Copy-Item "$ConfigDesktop\1-ssh\.ssh\" -Destination "$env:USERPROFILE\" -Force -Verbose -Recurse)
-    }  
-}
+	Start-Service sshd
+	Set-Service -Name sshd -StartupType 'Automatic'
+	if (!(Get-NetFirewallRule -Name "OpenSSH-Server-In-TCP" -ErrorAction SilentlyContinue | Select-Object Name, Enabled)) {
+	    Write-Output "Firewall Rule 'OpenSSH-Server-In-TCP' does not exist, creating it..."
+	    New-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
+	} else {
+	    Write-Output "Firewall rule 'OpenSSH-Server-In-TCP' has been created and exists."
+	}
+		$ConfigDesktop = "$env:USERPROFILE\Desktop\Config"
+	    $configpath = "$env:USERPROFILE\.ssh" 
+	    $pathExists = Test-Path -Path $configpath
+	    If ($pathExists)  {
+	    rmdir /s $env:USERPROFILE\.ssh
+	    rmdir /s $env:USERPROFILE\.dbus-keyrings
+	    Copy-Item "$ConfigDesktop\1-ssh\.dbus-keyrings\" -Destination "$env:USERPROFILE\" -Force -Verbose -Recurse
+	    Copy-Item "$ConfigDesktop\1-ssh\.ssh\" -Destination "$env:USERPROFILE\" -Force -Verbose -Recurse
+	    Return      #end the function if path was already there
+	    }
+	    else {
+	    (Copy-Item "$ConfigDesktop\1-ssh\.dbus-keyrings\" -Destination "$env:USERPROFILE\" -Force -Verbose -Recurse)
+	    (Copy-Item "$ConfigDesktop\1-ssh\.ssh\" -Destination "$env:USERPROFILE\" -Force -Verbose -Recurse)
+	    }  
+	}
 
 
 ##########
@@ -490,9 +488,8 @@ function DossierConfigStartisBack
     Centrer "dossiers de configurations du Bureau vers la bonne Location de Chacun copie correctement!!!" Green
 	Start-Sleep -Seconds 10
     Centrer "dossiers de configurations du Bureau vers la bonne Location de Chacun copie correctement!!!" Green
-	Start-Sleep -Seconds 10
 	Remove-Item -Path "$env:ProgramFiles\StartAllBack\StartAllBackX64.dll" -Force
-	Remove-Item -Path "$env:ProgramFiles\StartAllBack\UpdateCheck" -Force
+	Remove-Item -Path "$env:ProgramFiles\StartAllBack\UpdateCheck.exe" -Force
 	Move-Item "$ConfigDesktop\04-StartAllBack\Crack\StartAllBackX64.dll" -Destination "C:\Program Files\StartAllBack\StartAllBackX64.dll"
 	RefreshEnvironment
 }
@@ -596,7 +593,7 @@ function InstallByWinGet
 		##############
 		# Multimédia #
 		##############
-		
+
         "Valve.Steam"
         "Microsoft.PowerToys"
         "Google.Drive"
