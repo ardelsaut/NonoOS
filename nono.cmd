@@ -25,4 +25,5 @@ if '%errorlevel%' NEQ '0' (
 ::--------------------------------------
 
 set scriptpath=%~dp0
-PowerShell.exe -ExecutionPolicy RemoteSigned -noexit -Command "& './sophia.ps1'"
+PowerShell.exe -ExecutionPolicy RemoteSigned -noexit -Command "Get-ChildItem -Path ""%~dp0"" -Recurse | Unblock-File; & './sophia.ps1'"
+#PowerShell.exe -ExecutionPolicy RemoteSigned -noexit -Command "& './sophia.ps1'"
