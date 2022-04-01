@@ -586,22 +586,17 @@ DossierConfig
 #########################
 
 DossierConfigVSCodium
-
-DossierConfigOffice
-
-ActivationWindows
-
-DossierConfigRevo
-
-DossierConfigScriptsMaison
-
-DossierConfigStartisBack
-
-DossierConfigAdobe
-
 DossierConfigSsh
 
+
 # DossierConfigAppData
+
+
+
+
+
+
+
 
 
 ####################################
@@ -611,10 +606,17 @@ DossierConfigSsh
 # Installation des Applications #
 #################################
 ChocoInstall
-
 InstallByWinGet
 
+DossierConfigScriptsMaison
+DossierConfigRevo
+DossierConfigAdobe
+DossierConfigVmWare
 
+
+DossierConfigStartisBack
+DossierConfigOffice
+ActivationWindows
 ####################################
 
 

@@ -493,6 +493,14 @@ function DossierConfigStartisBack
 }
 
 
+function DossierConfigVmWare
+{
+    $ConfigDesktop = "$env:USERPROFILE\Desktop\Config"
+    Copy-Item "$ConfigDesktop\10-Vmware\" -Destination "$env:USERPROFILE\A-INSTALLER\Vmware\" -Force -Verbose -Recurse
+	$myprocss = Start-Process -FilePath "$env:USERPROFILE\A-INSTALLER\Vmware\VMware.exe" "/s /v""/qn EULAS_AGREED=1 SERIALNUMBER=ZF3R0-FHED2-M80TY-8QYGC-NPKYF""" -PassThru
+	$myprocss.WaitForExit()
+}
+
 ##########
 
 
@@ -538,38 +546,45 @@ function InstallByWinGet
        winget install --id=$str1  -e --accept-package-agreements --accept-source-agreements
     }
     $apps = @(
+		# Indispensables
         "7zip.7zip"
-        "TorProject.TorBrowser"
-        "Bitwarden.Bitwarden"
-        "Discord.Discord"
+        "JanDeDobbeleer.OhMyPosh"
         "voidtools.Everything"
         "stnkl.EverythingToolbar"
+		"AIMP.AIMP"
+        "Bitwarden.Bitwarden"
         "GitHub.GitHubDesktop"
-        # "Microsoft.Edge"
         "Mozilla.Thunderbird"
-        # "Obsidian.Obsidian"
         "qBittorrent.qBittorrent"
-        "Valve.Steam"
+        "TorProject.TorBrowser"
+		# Contrôle à Distance
+        "Parsec.Parsec"
         "TeamViewer.TeamViewer"
+		# Communication
         "WhatsApp.WhatsApp"
-        # "Microsoft.WindowsTerminal"
+        "Discord.Discord"
         "Telegram.TelegramDesktop"
+		# Traitement d'Image
         "DuongDieuPhap.ImageGlass"
         "Flameshot.Flameshot"
         "Python.3"
+		# Synology
         "Synology.DriveClient"
         "Synology.NoteStationClient"
         "Synology.ActiveBackupForBusinessAgent"
-        # "VideoLAN.VLC"
-        "Meld.Meld"
         "Melvin-Abraham.Google-Assistant.Preview"
-        "JanDeDobbeleer.OhMyPosh"
-
-# Ne pas Toucher à l'ordre		
+		# Multimédia
+		"PeterPawlowski.foobar2000"
+        "Valve.Steam"
         "Microsoft.PowerToys"
-        "Parsec.Parsec"
         "Google.Drive"
+		# Éditeur de Texte
+        "Meld.Meld"
         "VSCodium.VSCodium"
+        # "Microsoft.Edge"
+        # "Obsidian.Obsidian"
+        # "Microsoft.WindowsTerminal"
+        # "VideoLAN.VLC"
         )
     foreach ($app in $apps) {
         winget-install $app
