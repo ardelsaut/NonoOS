@@ -236,6 +236,7 @@ function ModulesScriptNonoOS
     Install-Module -Name '7Zip4PowerShell' -Force -SkipPublisherCheck -ErrorAction Ignore
     Import-Module "7Zip4PowerShell"
     Centrer "Le module (7Zip4PowerShell) est installe!!!!" Green
+	Install-Module "PS2EXE"
 }
 
 ##########
@@ -263,6 +264,10 @@ function ChocoInstall
 # Razer Synapse
     choco install razer-synapse-3 --ignore-checksums
     Stop-Process -Name 'RazerInstaller' -Force
+	
+# SpaceSniffer 
+	choco install spacesniffer --ignore-checksums
+
     Centrer "Applications ChocoLatey installees!!!" Green
     Centrer "ChocoLatey est installe!!!!" Green
 }
@@ -361,8 +366,8 @@ function DossierConfig
     
 	$ConfigBackup = "T:\PC\Windows\NonoOS\Config"
 	Copy-Item -Path (Get-Item -Path "$ConfigBackup\*" -Exclude ('$ConfigBackup\4-AppData')).FullName -Destination "$ConfigDesktop\" -Recurse -Force -Verbose
-	# Copy-Item "$ConfigBackup\*" -Destination "$ConfigDesktop\" -Exclude "$ConfigBackup\4-AppData" -Force -Verbose -Recurse 
     Centrer "Dossier De Configuration du Nas copié sur le Bureau!!!" Green
+	# O=n crée le Dossier "A-Installer"
     Centrer "On Copie les dossiers de configurations du Bureau vers la bonne Location de Chacun"
 	New-Item -Path "$env:USERPROFILE\A-INSTALLER" -ItemType Directory -Force
 }
@@ -469,6 +474,17 @@ function DossierConfigRevo
 ##########
 
 
+function DossierConfigTuneBlade
+{
+    $ConfigDesktop = "$env:USERPROFILE\Desktop\Config"
+    Expand-7Zip -ArchiveFileName "$ConfigDesktop\11-TuneBlade\TuneBlade.7z" -TargetPath "$env:USERPROFILE\A-INSTALLER" -Verbose
+	# Move-Item -Path "$env:USERPROFILE\Documents\Applications\revo" -destination "$env:USERPROFILE\Documents\Applications\Revo-Uninstaller-Pro-4.5.5" -Force
+}
+
+
+##########
+
+
 function DossierConfigScriptsMaison
 {
     $ConfigDesktop = "$env:USERPROFILE\Desktop\Config"
@@ -524,6 +540,20 @@ function DossierConfigAppData
 {
 # Dossier AppData
     $ConfigDesktop = "$env:USERPROFILE\Desktop\Config"
+    Xcopy "$ConfigDesktop\4-AppData" "$env:USERPROFILE\AppData" /E /H /C /I /y
+}
+
+
+##########
+
+
+function DossierConfiUserProfile
+{
+# Dossier AppData
+    $ConfigDesktop = "$env:USERPROFILE\Desktop\Config"
+    Xcopy "$ConfigDesktop\12-UserProfile\Pictures" "$env:USERPROFILE\Pictures" /E /H /C /I /y
+    Xcopy "$ConfigDesktop\12-UserProfile\.gitconfig" "$env:USERPROFILE\.gitconfig" /E /H /C /I /y
+    Xcopy "$ConfigDesktop\12-UserProfile\Pictures" "$env:USERPROFILE\.mytheme.omp.json" /E /H /C /I /y
     Xcopy "$ConfigDesktop\4-AppData" "$env:USERPROFILE\AppData" /E /H /C /I /y
 }
 

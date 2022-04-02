@@ -618,7 +618,7 @@ DossierConfigRevo
 DossierConfigAdobe
 DossierConfigVmWare
 DossierConfigWindowsUpdate
-
+DossierConfigTuneBlade
 
 DossierConfigStartisBack
 DossierConfigOffice
