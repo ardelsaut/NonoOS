@@ -359,8 +359,7 @@ DefaultTerminalApp -WindowsTerminal
 	Install the latest supported Microsoft Visual C++ Redistributable 2015—2022 x64
 	https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
 #>
-# InstallVCRedistx64
-InstallVCRedistx64bynono
+InstallVCRedistx64
 
 <#
 	Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form
@@ -591,7 +590,7 @@ DossierConfig
 
 DossierConfigVSCodium
 DossierConfigSsh
-
+DossierConfigWindowsUpdate
 DossierConfigAppData
 
 

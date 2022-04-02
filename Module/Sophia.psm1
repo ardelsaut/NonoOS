@@ -1,5 +1,4 @@
 ﻿# (New-Object System.Net.WebClient).DownloadFile("https://codeload.github.com/ardelsaut/NonoOS/zip/refs/heads/main", "$env:USERPROFILE\Desktop\NonoOS.zip"); Expand-Archive -LiteralPath "$env:USERPROFILE\Desktop\NonoOS.zip" -DestinationPath "$env:USERPROFILE\Desktop\"; Move-Item -Path "$env:USERPROFILE\Desktop\NonoOS-main" -Destination "$env:USERPROFILE\Desktop\NonoOS" -Force; Remove-Item -Path "$env:USERPROFILE\Desktop\NonoOS.zip"
-0
 
 function Checkings
 {
@@ -8676,6 +8675,15 @@ function DefaultTerminalApp
 	.NOTES
 	Machine-wide
 #>
+function InstallVCRedistx64bynono
+{
+$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+(New-Object System.Net.WebClient).DownloadFile("https://aka.ms/vs/16/release/vc_redist.x64.exe", "$DownloadsFolder\vc_redist.x64.exe")
+Start-Process -FilePath "$DownloadsFolder\vc_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+Remove-Item -Path "$DownloadsFolder\vc_redist.x64.exe", "$env:TEMP\dd_vcredist_amd64_*.log" -Force -ErrorAction Ignore
+
+}
+
 function InstallVCRedistx64
 {
 	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
