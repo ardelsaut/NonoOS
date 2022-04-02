@@ -1,4 +1,7 @@
-﻿function Checkings
+﻿# (New-Object System.Net.WebClient).DownloadFile("https://codeload.github.com/ardelsaut/NonoOS/zip/refs/heads/main", "$env:USERPROFILE\Desktop\NonoOS.zip"); Expand-Archive -LiteralPath "$env:USERPROFILE\Desktop\NonoOS.zip" -DestinationPath "$env:USERPROFILE\Desktop\"; Move-Item -Path "$env:USERPROFILE\Desktop\NonoOS-main" -Destination "$env:USERPROFILE\Desktop\NonoOS" -Force; Remove-Item -Path "$env:USERPROFILE\Desktop\NonoOS.zip"
+0
+
+function Checkings
 {
 	param
 	(
