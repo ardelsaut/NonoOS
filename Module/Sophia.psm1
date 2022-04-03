@@ -222,7 +222,7 @@ function ModulesScriptNonoOS
         Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -ErrorAction Ignore
     }
     If ($ArrPSRepos.Name -notcontains "PSGallery") {
-           Register-PSRepository -Default -InstallationPolicy "UnTrusted"  -ErrorAction Ignore       
+           Register-PSRepository -Default -InstallationPolicy "Trusted"  -ErrorAction Ignore       
            }
            ElseIf ($ArrPSRepos | ?{$_.Name -eq "PSGallery" -and $_.InstallationPolicy -ne "UnTrusted"}) 
            {
@@ -349,11 +349,11 @@ function ConnexionToNas
 	$SmBPwd = Get-Content "$pathpwdnas\pw.txt"
     $SmBUsr = Get-Content "$pathpwdnas\usr.txt"
     
-	Expand-7Zip -ArchiveFileName "$PSScriptRoot\Nas.7z" -TargetPath "$pathpwdnas" -Password $Pass -Verbose
+	Expand-7Zip -ArchiveFileName "$PSScriptRoot\Nas.7z" -TargetPath "$pathpwdnas" -Password $SmBPwd -Verbose
     
 	#Move-Item "$env:USERPROFILE\Documents\Applications\02-Nas\*" -Destination "$pathpwdnas" -Force -Recurse -Verbose
     #Remove-Item "$env:USERPROFILE\Documents\Applications\02-Nas" -Force -Recurse -Verbose
-    
+    Start-Sleep -Seconds 5
 	Centrer "On Crée le Raccourci pour le démarrage de la connection automatique du Nas" Cyan
     $SourceFilePath = "$pathpwdnas\nas1.cmd"
     $ShortcutPath = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\nas1.cmd.lnk"
