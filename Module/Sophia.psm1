@@ -222,11 +222,11 @@ function ModulesScriptNonoOS
         Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -ErrorAction Ignore
     }
     If ($ArrPSRepos.Name -notcontains "PSGallery") {
-           Register-PSRepository -Default -InstallationPolicy Trusted  -ErrorAction Ignore       
+           Register-PSRepository -Default -InstallationPolicy "UnTrusted"  -ErrorAction Ignore       
            }
-           ElseIf ($ArrPSRepos | ?{$_.Name -eq "PSGallery" -and $_.InstallationPolicy -ne "Trusted"}) 
+           ElseIf ($ArrPSRepos | ?{$_.Name -eq "PSGallery" -and $_.InstallationPolicy -ne "UnTrusted"}) 
            {
-           Set-PSRepository PSGallery -InstallationPolicy Trusted -ErrorAction Ignore    
+           Set-PSRepository PSGallery -InstallationPolicy "UnTrusted" -ErrorAction Ignore    
            }
     Centrer "NuGet et PSGallery sont correctement installe!!!!" Green
     Centrer "On installe les module dont depend le script (PowerShellGet et 7Zip4PowerShell)" Cyan
@@ -319,30 +319,50 @@ function AutoLogonWin
 
 function ConnexionToNas
 {
+
+# Mise en Place des Variables
     Centrer "On se connecte au Nas pour Continuer l'installation du Script" Cyan
-    $pathnas = "$env:USERPROFILE\Documents\Applications\Nas"
-    If(!(Test-Path -Path "$pathnas\pw7z.txt"))
-    {
-    	$passzip = Read-Host -Prompt "Mot De Passe 7zip"
-        New-Item -ItemType Directory -Force -Path $pathnas
-        Write-Output $passzip > $pathnas\pw7z.txt
-        $pass = Get-Content "$pathnas\pw7z.txt"
-        Expand-7Zip -ArchiveFileName "$PSScriptRoot\Nas.7z" -TargetPath "$pathnas" -Password $pass -Verbose
-        #Move-Item "$env:USERPROFILE\Documents\Applications\02-Nas\*" -Destination "$pathnas" -Force -Recurse -Verbose
-        #Remove-Item "$env:USERPROFILE\Documents\Applications\02-Nas" -Force -Recurse -Verbose
-        Centrer "On Crée le Raccourci pour le démarrage de la connection automatique du Nas" Cyan
-        $SourceFilePath = "$pathnas\nas1.cmd"
-        $ShortcutPath = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\nas1.cmd.lnk"
-        $WScriptObj = New-Object -ComObject ("WScript.Shell")
-        $shortcut = $WscriptObj.CreateShortcut($ShortcutPath)
-        $shortcut.TargetPath = $SourceFilePath
-        $shortcut.Save()
+    
+	$pathpwdnas = "$env:USERPROFILE\Documents\Applications\Nas"
+    $passPathExists = Test-Path -Path "$pathpwdnas\pw.txt"
+    
+	If ($passPathExists) {
+    Write-Host "Mot de Passe deja enregistre"
     }
     else {
-        Centrer "Mot de Passe deja enregistre" Green
+    New-Item -ItemType Directory -Force -Path "$pathpwdnas" | Out-Null 
+    $pass = Get-Credential -Message "Il est Indispendable de fournir un Mot de Passe pour pouvoir se connecter au Nas!" -User "Nono"
+    $pass.GetNetworkCredential().Password | Out-File "$pathpwdnas\pw.txt"
+    $pass.GetNetworkCredential().UserName | Out-File "$pathpwdnas\usr.txt"
     }
+    $passPathExists = Test-Path -Path "$pathpwdnas\usr.txt"
+    If ($passPathExists) {
+    Write-Host "Utilisateur deja enregistre"
+    }
+    else {
+    New-Item -ItemType Directory -Force -Path "$pathpwdnas" | Out-Null 
+    $pass = Get-Credential -Message "Il est Indispendable de fournir un Mot de Passe pour pouvoir se connecter au Nas!" -User "Nono"
+    $pass.GetNetworkCredential().UserName | Out-File "$pathpwdnas\usr.txt"
+    $pass.GetNetworkCredential().Password | Out-File "$pathpwdnas\pw.txt"
+    }
+    
+	$SmBPwd = Get-Content "$pathpwdnas\pw.txt"
+    $SmBUsr = Get-Content "$pathpwdnas\usr.txt"
+    
+	Expand-7Zip -ArchiveFileName "$PSScriptRoot\Nas.7z" -TargetPath "$pathpwdnas" -Password $Pass -Verbose
+    
+	#Move-Item "$env:USERPROFILE\Documents\Applications\02-Nas\*" -Destination "$pathpwdnas" -Force -Recurse -Verbose
+    #Remove-Item "$env:USERPROFILE\Documents\Applications\02-Nas" -Force -Recurse -Verbose
+    
+	Centrer "On Crée le Raccourci pour le démarrage de la connection automatique du Nas" Cyan
+    $SourceFilePath = "$pathpwdnas\nas1.cmd"
+    $ShortcutPath = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\nas1.cmd.lnk"
+    $WScriptObj = New-Object -ComObject ("WScript.Shell")
+    $shortcut = $WscriptObj.CreateShortcut($ShortcutPath)
+    $shortcut.TargetPath = $SourceFilePath
+    $shortcut.Save()
     Centrer "Connection au Nas !!" Cyan
-    powershell.exe "$pathnas\Nas-PowerShell-All-2.ps1"
+    powershell.exe "$pathpwdnas\Nas-PowerShell-All-2.ps1"
     Centrer "Connexion au Nas est effectuee!!!" Green
 }
 
