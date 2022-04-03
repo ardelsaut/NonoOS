@@ -1,1 +1,0 @@
-PowerShell -NoProfile -ExecutionPolicy Bypass -Command "& 'C:\Users\%USERNAME%\Documents\Applications\Nas\Nas-PowerShell-All-2.ps1'";
