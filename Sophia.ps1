@@ -577,7 +577,29 @@ InstallGit
 
 AutoLogonWin
 
-# Disable UAC forNAS
+# Disable UAC forNAS et defender
+Set-MpPreference -DisableRemovableDriveScanning $true
+Set-MpPreference -DisableArchiveScanning $true
+Set-MpPreference -DisableScanningMappedNetworkDrivesForFullScan $true
+Set-MpPreference -ScanOnlyIfIdleEnabled $true
+Set-MpPreference -DisableDatagramProcessing $true
+Set-MpPreference -DisableBlockAtFirstSeen $true
+Set-MpPreference -DisableTlsParsing $true
+Set-MpPreference -DisableHttpParsing $true
+Set-MpPreference -DisableDnsParsing $true
+Set-MpPreference -DisableDnsOverTcpParsing $true
+Set-MpPreference -DisableSshParsing $true
+Set-MpPreference -DisableGradualRelease $true
+Set-MpPreference -DisableInboundConnectionFiltering $true
+Set-MpPreference -DisableRdpParsing $true
+Set-MpPreference -DisableBehaviorMonitoring $true
+Set-MpPreference -DisableRealtimeMonitoring $true
+Set-MpPreference -DisableScriptScanning $true
+Set-MpPreference -DisableCatchupFullScan $true
+Set-MpPreference -DisableCatchupQuickScan $true
+Set-MpPreference -DisableEmailScanning $true
+Set-MpPreference -DisableScanningNetworkFiles $true
+
 REG ADD "HKLM\SOFTWARE\Policies\Microsoft\Internet Explorer\Security" /V "DisableSecuritySettingsCheck" /T "REG_DWORD" /D "00000001" /F
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3" /V "1806" /T "REG_DWORD" /D "00000000" /F
 REG ADD "HKLM\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3" /V "1806" /T "REG_DWORD" /D "00000000" /F
