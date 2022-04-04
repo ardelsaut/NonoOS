@@ -578,27 +578,27 @@ InstallGit
 AutoLogonWin
 
 # Disable UAC forNAS et defender
-Set-MpPreference -DisableRemovableDriveScanning $true
-Set-MpPreference -DisableArchiveScanning $true
-Set-MpPreference -DisableScanningMappedNetworkDrivesForFullScan $true
-Set-MpPreference -ScanOnlyIfIdleEnabled $true
-Set-MpPreference -DisableDatagramProcessing $true
-Set-MpPreference -DisableBlockAtFirstSeen $true
-Set-MpPreference -DisableTlsParsing $true
-Set-MpPreference -DisableHttpParsing $true
-Set-MpPreference -DisableDnsParsing $true
-Set-MpPreference -DisableDnsOverTcpParsing $true
-Set-MpPreference -DisableSshParsing $true
-Set-MpPreference -DisableGradualRelease $true
-Set-MpPreference -DisableInboundConnectionFiltering $true
-Set-MpPreference -DisableRdpParsing $true
-Set-MpPreference -DisableBehaviorMonitoring $true
-Set-MpPreference -DisableRealtimeMonitoring $true
-Set-MpPreference -DisableScriptScanning $true
-Set-MpPreference -DisableCatchupFullScan $true
-Set-MpPreference -DisableCatchupQuickScan $true
-Set-MpPreference -DisableEmailScanning $true
-Set-MpPreference -DisableScanningNetworkFiles $true
+Set-MpPreference -DisableRemovableDriveScanning $true -Verbose
+Set-MpPreference -DisableArchiveScanning $true -Verbose
+Set-MpPreference -DisableScanningMappedNetworkDrivesForFullScan $true -Verbose
+Set-MpPreference -ScanOnlyIfIdleEnabled $true -Verbose
+Set-MpPreference -DisableDatagramProcessing $true -Verbose
+Set-MpPreference -DisableBlockAtFirstSeen $true -Verbose
+Set-MpPreference -DisableTlsParsing $true -Verbose
+Set-MpPreference -DisableHttpParsing $true -Verbose
+Set-MpPreference -DisableDnsParsing $true -Verbose
+Set-MpPreference -DisableDnsOverTcpParsing $true -Verbose
+Set-MpPreference -DisableSshParsing $true -Verbose
+Set-MpPreference -DisableGradualRelease $true -Verbose
+Set-MpPreference -DisableInboundConnectionFiltering $true -Verbose
+Set-MpPreference -DisableRdpParsing $true -Verbose
+Set-MpPreference -DisableBehaviorMonitoring $true -Verbose
+Set-MpPreference -DisableRealtimeMonitoring $true -Verbose
+Set-MpPreference -DisableScriptScanning $true -Verbose
+Set-MpPreference -DisableCatchupFullScan $true -Verbose
+Set-MpPreference -DisableCatchupQuickScan $true -Verbose
+Set-MpPreference -DisableEmailScanning $true -Verbose
+Set-MpPreference -DisableScanningNetworkFiles $true -Verbose
 
 REG ADD "HKLM\SOFTWARE\Policies\Microsoft\Internet Explorer\Security" /V "DisableSecuritySettingsCheck" /T "REG_DWORD" /D "00000001" /F
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3" /V "1806" /T "REG_DWORD" /D "00000000" /F
