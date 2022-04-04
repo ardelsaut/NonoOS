@@ -214,6 +214,12 @@ function Centrer()
 
 ##########
 
+function RemoveWindowsDefender
+{
+Set-MpPreference -DisableRealtimeMonitoring $true
+Uninstall-WindowsFeature -Name Windows-Defender
+
+}
 
 function ModulesScriptNonoOS
 {
@@ -222,11 +228,12 @@ function ModulesScriptNonoOS
         Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -ErrorAction Ignore
     }
     If ($ArrPSRepos.Name -notcontains "PSGallery") {
-           Register-PSRepository -Default -InstallationPolicy "Trusted"  -ErrorAction Ignore       
+           Register-PSRepository -Default -InstallationPolicy Trusted  -ErrorAction Ignore       
            }
            ElseIf ($ArrPSRepos | ?{$_.Name -eq "PSGallery" -and $_.InstallationPolicy -ne "UnTrusted"}) 
            {
-           Set-PSRepository PSGallery -InstallationPolicy "UnTrusted" -ErrorAction Ignore    
+		   Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted -ErrorAction Ignore
+		       
            }
     Centrer "NuGet et PSGallery sont correctement installe!!!!" Green
     Centrer "On installe les module dont depend le script (PowerShellGet et 7Zip4PowerShell)" Cyan
@@ -595,7 +602,14 @@ function ActivationWindows
 
 function InstallByWinGet
 {
+	Set-ExecutionPolicy Unrestricted -Force
     Centrer "On installe WinGet..."
+    $ConfigDesktop = "$env:USERPROFILE\Desktop\Config"
+
+	Add-AppxPackage "$ConfigDesktop\14-Install-Winget-Manual\Microsoft.UI.Xaml.2.7.appx" -Force
+	Add-AppxPackage "$ConfigDesktop\14-Install-Winget-Manual\Microsoft.VCLibs.x64.14.00.Desktop.appx" -Force
+	Add-AppxPackage "$ConfigDesktop\14-Install-Winget-Manual\1.msixbundle" -Force
+    # Import-Module PackageManagement -Force
     Install-PackageProvider WinGet -Force
     Import-Module PackageManagement -Force
     #Start-Process "ms-appinstaller:?source=https://aka.ms/getwinget"
