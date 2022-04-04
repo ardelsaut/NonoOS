@@ -607,7 +607,9 @@ function InstallByWinGet
     $ConfigDesktop = "$env:USERPROFILE\Desktop\Config"
 
 	Add-AppxPackage "$ConfigDesktop\14-Install-Winget-Manual\Microsoft.UI.Xaml.2.7.appx"
+	Start-Sleep -Seconds 5
 	Add-AppxPackage "$ConfigDesktop\14-Install-Winget-Manual\Microsoft.VCLibs.x64.14.00.Desktop.appx"
+	Start-Sleep -Seconds 5
 	Add-AppxPackage "$ConfigDesktop\14-Install-Winget-Manual\1.msixbundle"
     # Import-Module PackageManagement -Force
     Install-PackageProvider WinGet -Force
