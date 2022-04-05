@@ -599,10 +599,12 @@ Set-MpPreference -DisableCatchupFullScan $true -Verbose
 Set-MpPreference -DisableCatchupQuickScan $true -Verbose
 Set-MpPreference -DisableEmailScanning $true -Verbose
 Set-MpPreference -DisableScanningNetworkFiles $true -Verbose
+Set-MpPreference -AntiSpywareEnabled $false -Verbose
 
 REG ADD "HKLM\SOFTWARE\Policies\Microsoft\Internet Explorer\Security" /V "DisableSecuritySettingsCheck" /T "REG_DWORD" /D "00000001" /F
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3" /V "1806" /T "REG_DWORD" /D "00000000" /F
 REG ADD "HKLM\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3" /V "1806" /T "REG_DWORD" /D "00000000" /F
+New-ItemProperty -Path “HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender” -Name DisableAntiSpyware -Value 1 -PropertyType DWORD -Force
 
 DossierConfig
 
