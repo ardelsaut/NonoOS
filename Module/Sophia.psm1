@@ -641,6 +641,7 @@ function InstallByWinGet
         "Mozilla.Thunderbird"
         "qBittorrent.qBittorrent"
         "TorProject.TorBrowser"
+        "Microsoft.WindowsTerminal"
 
 		#######################
 		# Contrôle à Distance #
@@ -689,7 +690,6 @@ function InstallByWinGet
 		############
         # "Microsoft.Edge"
         # "Obsidian.Obsidian"
-        # "Microsoft.WindowsTerminal"
         # "VideoLAN.VLC"
 
         )
@@ -8786,7 +8786,7 @@ function InstallVCRedistx64
 #>
 function WSLbynono
 {
-	Start-Process -FilePath wsl.exe -ArgumentList "--install --distribution Debian" -Wait
+	# Start-Process -FilePath wsl.exe -ArgumentList "--install --distribution Debian" -Wait
 	(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 
 }
